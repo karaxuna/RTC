@@ -1,7 +1,10 @@
-RTC
-===
+RTC.js ([demo][1])
+=
+
+[1]: http://karaxuna-rtc.ap01.aws.af.cm/
 
 Simplified peer connection using webRTC
+==
 
 
 Creating peer:
