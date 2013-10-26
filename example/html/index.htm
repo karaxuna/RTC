@@ -1,0 +1,63 @@
+<html>
+	<html>
+		<script type="text/javascript" src="./scripts/socket.io.js"></script>
+		<script type="text/javascript" src="./scripts/RTC.js"></script>
+	</html>
+	<body>
+		My socketId: <span id="socketIdContainer"></span>
+		<div id="connectContainer">
+			<video id="video" autoplay></video>
+			<input type="text" id="to" />
+			<input type="button" value="connect" onclick="connect(document.getElementById('to').value);" />
+		</div>
+
+		<script type="text/javascript">
+			navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
+
+			var socket = io.connect();
+			var peer;
+			var socketIdContainer = document.getElementById('socketIdContainer');
+			var connectContainer = document.getElementById('connectContainer');
+
+			socket.on('connect', function(){
+				peer = new RTCPeer({}, socket);
+				socketIdContainer.textContent = socket.socket.sessionid;
+
+				peer.on('offer', function(data){
+					navigator.getUserMedia({ audio: true, video: true }, function(stream){
+						peer.accept(data, [stream], function(err, con){
+							con.on('stream', function(strmArgs){
+								video.src = URL.createObjectURL(strmArgs.stream);
+							});
+						});
+					}, function(){
+						peer.reject(data, function(){
+							console.log('you rejected connection');
+						});
+					});
+				});
+			});
+
+			function connect(to){
+				navigator.getUserMedia({ audio: true, video: true }, function(stream){
+					peer.offer(to, [stream], function(err, con){
+						if(err)
+							console.error(err);
+						else
+						    con.on('stream', function(strmArgs){
+						        video.src = URL.createObjectURL(strmArgs.stream);
+						    }).on('rejected', function(){
+						    	console.log('peer rejected connection');
+						    }).on('accepted', function(){
+						    	console.log('peer accepted connection');
+						    }).on('offerfailed', function(data){
+								console.error(data.err);
+							});
+					});
+				}, function(err){
+					console.error(err);
+				});
+			}
+		</script>
+	</body>
+</html>
