@@ -10,7 +10,7 @@ var http      = require('http'),
 app.configure(function(){
     app.use(express.methodOverride());
     app.use(express.bodyParser());
-    app.use(express.static(__dirname + '/example'));
+    app.use(express.static(__dirname + '/public'));
     app.use(express.errorHandler({
         dumpExceptions: true, 
         showStack: true
@@ -19,5 +19,5 @@ app.configure(function(){
 });
 
 app.get("/", function(req, res) {
-    res.sendfile("./example/html/index.htm");
+    res.sendfile("./public/html/index.htm");
 });
