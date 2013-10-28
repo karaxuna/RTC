@@ -5,17 +5,11 @@ var http      = require('http'),
     ip        = process.env.IP || 'localhost',
     server    = app.listen(port, ip),
     io        = require('socket.io').listen(server),
-<<<<<<< HEAD
     users     = {};
 
 // settings
 app.configure(function(){
     io.set('transports', ['xhr-polling', 'jsonp-polling']);
-=======
-    provider  = new (require('./provider'))(app, io);
-
-app.configure(function(){
->>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
     app.use(express.methodOverride());
     app.use(express.bodyParser());
     app.use(express.static(__dirname + '/public'));
@@ -26,7 +20,6 @@ app.configure(function(){
     app.use(app.router);
 });
 
-<<<<<<< HEAD
 // serve html file
 app.get("/", function(req, res) {
     res.sendfile("./public/html/index.htm");
@@ -48,8 +41,4 @@ io.sockets.on('connection', function(socket){
     socket.on('disconnect', function(){
         delete users[socket.id];
     });
-=======
-app.get("/", function(req, res) {
-    res.sendfile("./public/html/index.htm");
->>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
 });
