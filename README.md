@@ -1,33 +1,18 @@
-<<<<<<< HEAD
-RTC
-===
-
-Simplified peer connection using webRTC
-
-
-Creating peer:
-===
-=======
-RTC.js ([demo][1])
-=
+RTC.js (([demo][1]))
 
 [1]: http://karaxuna-rtc.ap01.aws.af.cm/
+===
 
 Simplified peer connection using webRTC
-==
 
 
 Creating peer:
->>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
 
     var socket = io.connect();
     var peer = new RTCPeer({}, socket);
     
 Connecting:
-<<<<<<< HEAD
 ===
-=======
->>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
 
     navigator.getUserMedia({ audio: true, video: true }, function(stream){
       peer.offer(to, [stream], function(err, con){
@@ -45,10 +30,7 @@ Connecting:
     });
     
 Accepting connection:
-<<<<<<< HEAD
 ===
-=======
->>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
 
     peer.on('offer', function(data){
       navigator.getUserMedia({ audio: true, video: true }, function(stream){
@@ -63,7 +45,6 @@ Accepting connection:
         });
       });
     });
-<<<<<<< HEAD
 
 DataChannel:
 ===
@@ -84,10 +65,5 @@ DataChannel:
     
 Todo list:
   1. <strike>Add DataChannel support;</strike>
-=======
-    
-Todo list:
-  1. Add DataChannel support;
->>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
   2. Improve documentation;
   3. Improve performance;
