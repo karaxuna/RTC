@@ -63,3 +63,4 @@ Simplified peer connection using webRTC
 Todo list:
   1. Improve documentation;
   2. Improve performance;
+  3. Add DataChannel FireFox support
