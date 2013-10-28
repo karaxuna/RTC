@@ -376,6 +376,7 @@
             var pc = self.pc =  new RTCPeerConnection(self.options.servers, { optional: [{ RtpDataChannels: self.options.allowDataChannels }] });
             EventTarget.call(self);
 
+<<<<<<< HEAD
             // data channels
             var dataChannel = self.dataChannel = pc.createDataChannel('dataChannel', { reliable: false });
 
@@ -387,6 +388,8 @@
                 self.trigger('channel', event);
             });
 
+=======
+>>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
             // add local streams
             if(streams)
                 _utils.each(streams, function(stream){
@@ -394,8 +397,13 @@
                 });
 
             // listen for remote streams
+<<<<<<< HEAD
             pc.addEventListener('addstream', function(event){
                 self.trigger('stream', event);
+=======
+            pc.addEventListener('addstream', function(e){
+                self.trigger('stream', { stream: e.stream });
+>>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
             });
 
             // listen for ice candidates
@@ -406,7 +414,10 @@
                     self.trigger('icegatheringcomplete');
             });
 
+<<<<<<< HEAD
             // listen for connection close
+=======
+>>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
             pc.addEventListener('iceconnectionstatechange', function(e){
                 if(pc.iceConnectionState === 'disconnected')
                     self.trigger('closed');
@@ -426,11 +437,14 @@
                 var self = this;
                 self.pc.close();
                 self.trigger('closed');
+<<<<<<< HEAD
             }),
 
             send: _utils.chain(function(data){
                 var self = this;
                 self.dataChannel.send(data);
+=======
+>>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
             })
         }, [Array]);
     })();

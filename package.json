@@ -3,7 +3,11 @@
     "version":"0.0.1",
     "dependencies":{
         "express": "",
+<<<<<<< HEAD
         "socket.io": "",
         "cookie": ""
+=======
+        "socket.io": ""
+>>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
     }
 }
