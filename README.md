@@ -61,6 +61,5 @@ Simplified peer connection using webRTC
     });
     
 Todo list:
-  1. <strike>Add DataChannel support;</strike>
-  2. Improve documentation;
-  3. Improve performance;
+  1. Improve documentation;
+  2. Improve performance;
