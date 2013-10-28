@@ -1,18 +1,17 @@
-RTC.js (([demo][1]))
-
+RTC.js ([demo][1])
+==
 [1]: http://karaxuna-rtc.ap01.aws.af.cm/
-===
+
 
 Simplified peer connection using webRTC
+==
 
-
-Creating peer:
+**Creating peer:**
 
     var socket = io.connect();
     var peer = new RTCPeer({}, socket);
     
-Connecting:
-===
+**Connecting:**
 
     navigator.getUserMedia({ audio: true, video: true }, function(stream){
       peer.offer(to, [stream], function(err, con){
@@ -29,8 +28,7 @@ Connecting:
       console.error(err);
     });
     
-Accepting connection:
-===
+**Accepting connection:**
 
     peer.on('offer', function(data){
       navigator.getUserMedia({ audio: true, video: true }, function(stream){
@@ -46,8 +44,7 @@ Accepting connection:
       });
     });
 
-DataChannel:
-===
+**DataChannel:**
   
   send:
 
