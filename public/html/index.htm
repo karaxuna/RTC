@@ -5,7 +5,6 @@
 	</html>
 	<body>
 		My socketId: <span id="socketIdContainer"></span>
-<<<<<<< HEAD
 		<div>
 			<input type="text" id="to" />
 			<input type="button" value="connect" onclick="connect(document.getElementById('to').value);" />
@@ -14,13 +13,6 @@
 			
 		</div>
 		<video id="video" autoplay></video>
-=======
-		<div id="connectContainer">
-			<video id="video" autoplay></video>
-			<input type="text" id="to" />
-			<input type="button" value="connect" onclick="connect(document.getElementById('to').value);" />
-		</div>
->>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
 
 		<script type="text/javascript">
 			navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
@@ -28,10 +20,6 @@
 			var socket = io.connect();
 			var peer;
 			var socketIdContainer = document.getElementById('socketIdContainer');
-<<<<<<< HEAD
-=======
-			var connectContainer = document.getElementById('connectContainer');
->>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
 
 			socket.on('connect', function(){
 				peer = new RTCPeer({}, socket);
@@ -42,15 +30,11 @@
 						peer.accept(data, [stream], function(err, con){
 							con.on('stream', function(strmArgs){
 								video.src = URL.createObjectURL(strmArgs.stream);
-<<<<<<< HEAD
 							}).on('channel', function(){
 						    	con.on('data', function(e){
 						    		console.log('data received', e.data);
 						    	});
 						    });
-=======
-							});
->>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
 						});
 					}, function(){
 						peer.reject(data, function(){
@@ -66,28 +50,17 @@
 						if(err)
 							console.error(err);
 						else
-<<<<<<< HEAD
 						    con.on('stream', function(e){
 						        video.src = URL.createObjectURL(e.stream);
-=======
-						    con.on('stream', function(strmArgs){
-						        video.src = URL.createObjectURL(strmArgs.stream);
->>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
 						    }).on('rejected', function(){
 						    	console.log('peer rejected connection');
 						    }).on('accepted', function(){
 						    	console.log('peer accepted connection');
-<<<<<<< HEAD
 						    }).on('channel', function(){
-								var data = { konichiva: 'vatashiva' };
-								con.send(JSON.stringify(data));
-								console.log('data sent: ', data);
+								con.send('hello friend');
+								console.log('data sent');
 							}).on('offerfailed', function(e){
 								console.error(e.err);
-=======
-						    }).on('offerfailed', function(data){
-								console.error(data.err);
->>>>>>> e2596ae577257e77def4cf7e934195b03fb09730
 							});
 					});
 				}, function(err){
