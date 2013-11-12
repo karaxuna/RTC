@@ -88,7 +88,7 @@ Simplified peer connection using webRTC
   - `stream` - remote stream ready;
   - `channel` - DataChannel ready;
   - `data` - DataChannel received data;
-   
+
   Methods:
 
   - `close()` - close connection;
