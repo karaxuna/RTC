@@ -60,6 +60,18 @@ Simplified peer connection using webRTC
       });
     });
     
+** RTCConnection events: **
+  `accepted` - offer accepted by remote peer;
+  `rejected` - offer rejected by remote peer;
+  `icegatheringcomplete` - gathering local ice candidates completed;
+  `offerfailed` - failed to send offer;
+  `offersucceeded` - offer sent;
+  `acceptfailed` - sending answer about accepting offer failed;
+  `acceptsucceeded` - sent answer about accepting offer;
+  `closed` - connection closed (triggers automatically when `iceConnectionState === 'disconnected'`);
+  `data` - DataChannel received data;
+  `stream` - remote stream ready;
+    
 Todo list:
   1. Improve documentation;
   2. Improve performance;
