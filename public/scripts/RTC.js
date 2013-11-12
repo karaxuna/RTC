@@ -277,7 +277,7 @@
                                 con.close()
                                 con.trigger('offerfailed', { err: err, offer: data });
                             } else
-                                con.trigger('offersuccessed', { con: con, offer: data });
+                                con.trigger('offersucceeded', { con: con, offer: data });
                         });
                     });
                     con.pc.setLocalDescription(description);
@@ -310,7 +310,7 @@
                             if(err)
                                 con.trigger('acceptfailed', { err: err, answer: data });
                             else
-                                con.trigger('acceptsuccessed', { con: con, answer: data });
+                                con.trigger('acceptsucceeded', { con: con, answer: data });
                         });
                     });
                     con.pc.setLocalDescription(localDescription);
@@ -319,7 +319,7 @@
                 });
             }),
 
-			reject: _utils.chain(function(offer, callback){
+	    reject: _utils.chain(function(offer, callback){
                 var self = this;
 
                 self.provider.send('rejected', offer.from, { offererConnectionId: offer.data.connectionId }, function(err){
