@@ -60,11 +60,22 @@ Simplified peer connection using webRTC
       });
     });
     
-**RTCPeer events**
+**RTCPeer**
+
+  Events:
 
   - `offer` - received offer;
+  
+  Methods:
+
+  - `offer(String: to, [MediaStream]: streams, function: callback)` - create offer;
+  - `accept(Object: offer, [MediaStream]: streams, function: callback)` - accept offer;
+  - `reject(Object: offer, function: callback)` - reject offer;
+  - `stopConnection(RTCConnection: con, String: to, function: callback)` - stop connection (send notification to peer);
     
-**RTCConnection events:**
+**RTCConnection**
+
+  Events:
 
   - `accepted` - offer accepted by remote peer;
   - `rejected` - offer rejected by remote peer;
@@ -77,6 +88,11 @@ Simplified peer connection using webRTC
   - `stream` - remote stream ready;
   - `channel` - DataChannel ready;
   - `data` - DataChannel received data;
+   
+  Methods:
+
+  - `close()` - close connection;
+  - `send(String: data)` - send data through DataChannel;
     
 Todo list:
   1. Improve documentation;
