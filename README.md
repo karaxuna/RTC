@@ -62,11 +62,11 @@ Simplified peer connection using webRTC
     
 **RTCPeer**
 
-  Events:
+Events:
 
   - `offer` - received offer;
   
-  Methods:
+Methods:
 
   - `offer(String: to, [MediaStream]: streams, function: callback)` - create offer;
   - `accept(Object: offer, [MediaStream]: streams, function: callback)` - accept offer;
@@ -75,7 +75,7 @@ Simplified peer connection using webRTC
     
 **RTCConnection**
 
-  Events:
+Events:
 
   - `accepted` - offer accepted by remote peer;
   - `rejected` - offer rejected by remote peer;
@@ -89,11 +89,13 @@ Simplified peer connection using webRTC
   - `channel` - DataChannel ready;
   - `data` - DataChannel received data;
 
-  Methods:
+Methods:
 
   - `close()` - close connection;
   - `send(String: data)` - send data through DataChannel;
-    
+
+==
+
 Todo list:
   1. Improve documentation;
   2. Add DataChannel FireFox support
