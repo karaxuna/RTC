@@ -60,6 +60,10 @@ Simplified peer connection using webRTC
       });
     });
     
+**RTCPeer events**
+
+  - `offer` - received offer;
+    
 **RTCConnection events:**
 
   - `accepted` - offer accepted by remote peer;
@@ -70,10 +74,10 @@ Simplified peer connection using webRTC
   - `acceptfailed` - sending answer about accepting offer failed;
   - `acceptsucceeded` - sent answer about accepting offer;
   - `closed` - connection closed (triggers automatically when `iceConnectionState === 'disconnected'`);
-  - `data` - DataChannel received data;
   - `stream` - remote stream ready;
+  - `channel` - DataChannel ready;
+  - `data` - DataChannel received data;
     
 Todo list:
   1. Improve documentation;
-  2. Improve performance;
-  3. Add DataChannel FireFox support
+  2. Add DataChannel FireFox support
