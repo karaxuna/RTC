@@ -360,10 +360,11 @@
 
     // Connection
     (function(){
+
         // default options
         var defaultOptions = {
             servers: {"iceServers": [{"url": "stun:stun.l.google.com:19302"}/*, {"url":"turn:my_username@<turn_server_ip_address>", "credential":"my_password"}*/]},
-            allowDataChannels: true
+            DtlsSrtpKeyAgreement: true
         };
 
         // constructor
@@ -373,18 +374,20 @@
             self.id = _utils.generateGuid();
             self.streams = streams;
             var candidates = self.candidates = [];
-            var pc = self.pc =  new RTCPeerConnection(self.options.servers, { optional: [{ RtpDataChannels: self.options.allowDataChannels }] });
+            var pc = self.pc =  new RTCPeerConnection(self.options.servers, { optional: [{ DtlsSrtpKeyAgreement: self.options.DtlsSrtpKeyAgreement }] });
             EventTarget.call(self);
 
             // data channels
-            var dataChannel = self.dataChannel = pc.createDataChannel('dataChannel', { reliable: false });
-
-            dataChannel.addEventListener('message', function(event){
-                self.trigger('data', event);
+            pc.addEventListener('datachannel', function(e){
+                e.channel.addEventListener('open', function(){
+                    console.log('channel opened: ', e.channel);
+                    self.trigger('channel', e.channel);
+                });
             });
 
-            dataChannel.addEventListener('open', function(){
-                self.trigger('channel', event);
+            pc.createDataChannel('dataChannel').addEventListener('message', function(e){
+                console.log('data received: ', e);
+                self.trigger('data', e);
             });
 
             // add local streams
@@ -394,14 +397,14 @@
                 });
 
             // listen for remote streams
-            pc.addEventListener('addstream', function(event){
-                self.trigger('stream', event);
+            pc.addEventListener('addstream', function(e){
+                self.trigger('stream', e);
             });
 
             // listen for ice candidates
-            pc.addEventListener('icecandidate', function (event) {
-                if(event.candidate){
-                    candidates.push(event.candidate);
+            pc.addEventListener('icecandidate', function (e) {
+                if(e.candidate){
+                    candidates.push(e.candidate);
                 } else
                     self.trigger('icegatheringcomplete');
             });
@@ -426,11 +429,6 @@
                 var self = this;
                 self.pc.close();
                 self.trigger('closed');
-            }),
-
-            send: _utils.chain(function(data){
-                var self = this;
-                self.dataChannel.send(data);
             })
         }, [Array]);
     })();
