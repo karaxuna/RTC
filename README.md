@@ -68,6 +68,7 @@ con.on('channel', function(){
         console.log(e.data);
     });
 });
+```
     
 **RTCPeer**
 
