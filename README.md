@@ -1,4 +1,4 @@
-RTC.js ([demo][1])
+RTC.js
 ==
 [1]: http://karaxuna-rtc.ap01.aws.af.cm/
 
