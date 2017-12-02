@@ -1,9 +1,31 @@
 {
-    "name":"RTC",
-    "version":"0.0.1",
-    "dependencies":{
-        "express": "",
-        "socket.io": "",
-        "cookie": ""
-    }
+  "name": "rtc",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "set NODE_ENV=development&&node index",
+    "build": "./node_modules/.bin/webpack -p --config webpack.config.js"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4",
+    "socket.io-client": "^2.0.4"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.2.3",
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^2.0.0-rc.3",
+    "file-loader": "^0.10.0",
+    "html-webpack-plugin": "^2.30.1",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.13.1",
+    "typescript": "^2.4.1",
+    "url-loader": "^0.5.9",
+    "webpack": "^2.2.1",
+    "webpack-dev-middleware": "^1.10.1",
+    "webpack-dev-server": "^2.4.1",
+    "webpack-hot-middleware": "^2.17.1"
+  },
+  "main": "./dist/rtc.js"
 }
