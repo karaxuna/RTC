@@ -9,7 +9,7 @@ var connectButton = document.getElementById('connect') as HTMLButtonElement;
 var toInput = document.getElementById('to') as HTMLInputElement;
 var logsContainer = document.getElementById('logs') as HTMLDivElement;
 
-function log (...args) {
+function log(...args) {
     let texts = args.map(arg => {
         if (typeof arg === 'string') {
             return arg;
@@ -67,8 +67,13 @@ socket.on('connect', function () {
     });
 });
 
-function connect(to) {
-    getUserMedia({ audio: true, video: true }).then(function (stream) {
+async function connect(to) {
+    try {
+        let stream = await getUserMedia({
+            audio: true,
+            video: true
+        });
+
         peer.offer(to, [stream], function (err, con) {
             if (err) {
                 log(err.message);
@@ -88,7 +93,8 @@ function connect(to) {
                 });
             }
         });
-    }, function (err) {
+    }
+    catch (err) {
         log(err);
-    });
+    }
 }

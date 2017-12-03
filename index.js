@@ -56,19 +56,21 @@ server.listen(config.PORT, '0.0.0.0', function (err) {
 });
 
 var users = {};
-io.sockets.on('connection', function(socket){
+io.sockets.on('connection', function (socket) {
     users[socket.id] = socket;
 
-    socket.on('rtcdata', function(data, callback){
+    socket.on('rtcdata', function (data, callback) {
         data.from = socket.id;
         var user = users[data.to];
-        if(user)
+        if (user) {
             user.emit('rtcdata', data, callback);
-        else
+        }
+        else {
             callback('user not found');
+        }
     });
 
-    socket.on('disconnect', function(){
+    socket.on('disconnect', function () {
         delete users[socket.id];
     });
 });

@@ -3,8 +3,12 @@ import EventTarget from './EventTarget';
 import RTCProvider from './RTCProvider';
 import RTCConnection from './RTCConnection';
 
+export interface IRTCPeerOptions {
+
+}
+
 class RTCPeer extends EventTarget {
-    options;
+    options: IRTCPeerOptions;
     provider: RTCProvider;
     connections: RTCConnection[] = [];
 
@@ -12,7 +16,7 @@ class RTCPeer extends EventTarget {
         
     };
 
-    constructor(options, socket) {
+    constructor(options: IRTCPeerOptions, socket) {
         super();
         options = this.options = merge(RTCPeer.defaultOptions, options || {}, [Array]);
         let provider = this.provider = new RTCProvider({}, socket);
@@ -73,8 +77,10 @@ class RTCPeer extends EventTarget {
                 });
             });
             con.pc.setLocalDescription(description);
-        }, function (err) {
-            con.trigger('offerfailed', { err: err });
+        }, (err) => {
+            con.trigger('offerfailed', {
+                err: err
+            });
         });
     });
 
