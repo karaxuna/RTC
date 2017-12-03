@@ -1,6 +1,5 @@
 import * as io from 'socket.io-client';
 import RTCPeer from '@lib/RTCPeer';
-import { log } from '@lib/logger';
 
 var socket = io.connect();
 var peer;
@@ -8,6 +7,27 @@ var socketIdContainer = document.getElementById('socketIdContainer') as HTMLDivE
 var videoElement = document.getElementById('video') as HTMLVideoElement;
 var connectButton = document.getElementById('connect') as HTMLButtonElement;
 var toInput = document.getElementById('to') as HTMLInputElement;
+var logsContainer = document.getElementById('logs') as HTMLDivElement;
+
+function log (...args) {
+    let texts = args.map(arg => {
+        if (typeof arg === 'string') {
+            return arg;
+        }
+
+        if (arg.stack) {
+            return arg.stack;
+        }
+
+        if (arg.name) {
+            return arg.name;
+        }
+    });
+
+    var logElement = document.createElement('div');
+    logElement.innerHTML = texts.join('<br/>');
+    logsContainer.appendChild(logElement);
+}
 
 let getUserMedia = navigator.mediaDevices.getUserMedia ? navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices) :
     function (constraints) {
