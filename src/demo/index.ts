@@ -23,13 +23,13 @@ socket.on('connect', function () {
                     videoElement.src = URL.createObjectURL(strmArgs.stream);
                 }).on('channel', function () {
                     con.on('data', function (e) {
-                        console.log('data received', e.data);
+                        alert('data received ' + e.data);
                     });
                 });
             });
         }, function () {
             peer.reject(data, function () {
-                console.log('you rejected connection');
+                alert('you rejected connection');
             });
         });
     });
@@ -39,24 +39,24 @@ function connect(to) {
     navigator.getUserMedia({ audio: true, video: true }, function (stream) {
         peer.offer(to, [stream], function (err, con) {
             if (err) {
-                console.error(err);
+                alert(err.message);
             }
             else {
                 con.on('stream', function (e) {
                     videoElement.src = URL.createObjectURL(e.stream);
                 }).on('rejected', function () {
-                    console.log('peer rejected connection');
+                    alert('peer rejected connection');
                 }).on('accepted', function () {
-                    console.log('peer accepted connection');
+                    alert('peer accepted connection');
                 }).on('channel', function (channel) {
                     channel.send('hello friend');
-                    console.log('data sent');
+                    alert('data sent');
                 }).on('offerfailed', function (e) {
-                    console.error(e.err);
+                    alert(e.err.message);
                 });
             }
         });
     }, function (err) {
-        console.error(err);
+        alert(err.message);
     });
 }
