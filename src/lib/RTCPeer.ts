@@ -5,8 +5,8 @@ import RTCConnection from './RTCConnection';
 
 class RTCPeer extends EventTarget {
     options;
-    provider;
-    connections = [];
+    provider: RTCProvider;
+    connections: RTCConnection[] = [];
 
     static defaultOptions = {
         
@@ -115,16 +115,19 @@ class RTCPeer extends EventTarget {
         let self = this;
 
         self.provider.send('rejected', offer.from, { offererConnectionId: offer.data.connectionId }, function (err) {
-            if (err)
+            if (err) {
                 callback(err);
-            else
+            }
+            else {
                 callback(null);
+            }
         });
     });
 
     addConnection = chain(function (con) {
         let self = this;
         self.connections.push(con);
+
         con.on('closed', function () {
             let streams = union(con.pc.getLocalStreams(), con.pc.getRemoteStreams());
             each(streams, function (stream) { stream.stop(); });
@@ -134,9 +137,11 @@ class RTCPeer extends EventTarget {
 
     stopConnection = chain(function (con, to, callback) {
         let self = this;
+
         self.provider.send('stop', { to: to, id: con.id }, function (err) {
-            if (err)
+            if (err) {
                 callback(err);
+            }
             else {
                 con.close();
                 callback(null);

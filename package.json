@@ -12,6 +12,7 @@
     "socket.io-client": "^2.0.4"
   },
   "devDependencies": {
+    "@types/webrtc": "0.0.22",
     "awesome-typescript-loader": "^3.2.3",
     "css-loader": "^0.26.1",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",

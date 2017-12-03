@@ -48,8 +48,8 @@ function connect(to) {
                     console.log('peer rejected connection');
                 }).on('accepted', function () {
                     console.log('peer accepted connection');
-                }).on('channel', function () {
-                    con.send('hello friend');
+                }).on('channel', function (channel) {
+                    channel.send('hello friend');
                     console.log('data sent');
                 }).on('offerfailed', function (e) {
                     console.error(e.err);

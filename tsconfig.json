@@ -7,7 +7,9 @@
         "sourceMap": true,
         "experimentalDecorators": true,
         "typeRoots": [],
-        "types": [],
+        "types": [
+            "@types/webrtc"
+        ],
         "baseUrl": "",
         "paths": {
             "@lib/*": ["src/lib/*"]

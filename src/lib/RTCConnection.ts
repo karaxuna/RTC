@@ -3,10 +3,10 @@ import EventTarget from './EventTarget';
 
 class RTCConnection extends EventTarget {
     options;
-    id;
-    streams;
-    candidates;
-    pc;
+    id: string;
+    streams: MediaStream[];
+    candidates: RTCIceCandidate[];
+    pc: RTCPeerConnection;
 
     static defaultOptions = {
         evname: 'rtcdata'
@@ -24,17 +24,17 @@ class RTCConnection extends EventTarget {
         var pc = self.pc = new RTCPeerConnection(self.options.servers);
 
         // Data channels
-        // pc.addEventListener('datachannel', function (e) {
-        //     e.channel.addEventListener('open', function () {
-        //         console.log('channel opened: ', e.channel);
-        //         self.trigger('channel', e.channel);
-        //     });
-        // });
+        pc.addEventListener('datachannel', function (e: any) {
+            e.channel.addEventListener('open', function () {
+                console.log('channel opened: ', e.channel);
+                self.trigger('channel', e.channel);
+            });
+        });
 
-        // pc.createDataChannel('dataChannel').addEventListener('message', function (e) {
-        //     console.log('data received: ', e);
-        //     self.trigger('data', e);
-        // });
+        pc.createDataChannel('dataChannel').addEventListener('message', function (e) {
+            console.log('data received: ', e);
+            self.trigger('data', e);
+        });
 
         // Add local streams
         if (streams) {

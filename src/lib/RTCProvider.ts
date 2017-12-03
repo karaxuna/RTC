@@ -1,4 +1,4 @@
-import { merge } from './utils';
+import { merge, chain } from './utils';
 import EventTarget from './EventTarget';
 
 class RTCProvider extends EventTarget {
@@ -11,7 +11,7 @@ class RTCProvider extends EventTarget {
 
     constructor(options, socket) {
         super();
-        
+
         this.options = merge(RTCProvider.defaultOptions, options || {}, [Array]);
         this.socket = socket;
 
@@ -23,6 +23,11 @@ class RTCProvider extends EventTarget {
             });
         });
     }
+
+    send = chain(function (type, to, data, callback) {
+        var self = this;
+        self.socket.emit(self.options.evname, { type: type, to: to, data: data }, callback);
+    });
 }
 
 export default RTCProvider;
