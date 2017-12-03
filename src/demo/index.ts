@@ -9,6 +9,17 @@ var videoElement = document.getElementById('video') as HTMLVideoElement;
 var connectButton = document.getElementById('connect') as HTMLButtonElement;
 var toInput = document.getElementById('to') as HTMLInputElement;
 
+let getUserMedia = navigator.mediaDevices.getUserMedia ? navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices) :
+    function (constraints) {
+        return new Promise((resolve, reject) => {
+            navigator.getUserMedia.call(navigator, constraints, function (stream) {
+                resolve(stream);
+            }, function (err) {
+                reject(err);
+            });
+        })
+    };
+
 connectButton.addEventListener('click', function () {
     connect(toInput.value);
 });
@@ -18,7 +29,7 @@ socket.on('connect', function () {
     socketIdContainer.textContent = socket.id;
 
     peer.on('offer', function (data) {
-        navigator.getUserMedia({ audio: true, video: true }, function (stream) {
+        getUserMedia({ audio: true, video: true }).then(function (stream) {
             peer.accept(data, [stream], function (err, con) {
                 con.on('stream', function (strmArgs) {
                     videoElement.src = URL.createObjectURL(strmArgs.stream);
@@ -37,7 +48,7 @@ socket.on('connect', function () {
 });
 
 function connect(to) {
-    navigator.getUserMedia({ audio: true, video: true }, function (stream) {
+    getUserMedia({ audio: true, video: true }).then(function (stream) {
         peer.offer(to, [stream], function (err, con) {
             if (err) {
                 log(err.message);
