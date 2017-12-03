@@ -51,8 +51,8 @@ socket.on('connect', function () {
     peer.on('offer', function (data) {
         getUserMedia({ audio: true, video: true }).then(function (stream) {
             peer.accept(data, [stream], function (err, con) {
-                con.on('streams', function (streams) {
-                    videoElement.src = URL.createObjectURL(streams[0]);
+                con.on('streams', function (e) {
+                    videoElement.src = URL.createObjectURL(e.streams[0]);
                 }).on('channel', function () {
                     con.on('data', function (e) {
                         log('data received', e.data);

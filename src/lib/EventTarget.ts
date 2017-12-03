@@ -15,12 +15,7 @@ class EventTarget {
         if (this._listeners[type] instanceof Array) {
             var listeners = this._listeners[type];
             for (var i = 0, len = listeners.length; i < len; i++) {
-                if (data instanceof Array) {
-                    listeners[i].apply(this, data);
-                }
-                else {
-                    listeners[i].call(this, data);
-                }
+                listeners[i].call(this, data);
             }
         }
     });
