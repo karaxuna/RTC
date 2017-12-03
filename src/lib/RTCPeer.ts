@@ -129,8 +129,17 @@ class RTCPeer extends EventTarget {
         self.connections.push(con);
 
         con.on('closed', function () {
-            let streams = union(con.pc.getLocalStreams(), con.pc.getRemoteStreams());
-            each(streams, function (stream) { stream.stop(); });
+            let streams = union(
+                con.pc.getLocalStreams(),
+                con.pc.getRemoteStreams()
+            );
+
+            each(streams, function (stream) {
+                stream.getTracks().forEach(function (track) {
+                    track.stop();
+                });
+            });
+
             self.connections.splice(self.connections.indexOf(con), 1);
         });
     });
