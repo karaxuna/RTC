@@ -45,8 +45,12 @@ class RTCConnection extends EventTarget {
 
         // Listen for remote streams
         pc.addEventListener('addstream', function (e) {
-            self.trigger('stream', e);
+            self.trigger('streams', [e.stream]);
         });
+
+        pc.ontrack = function (e) {
+            self.trigger('streams', e.streams);
+        };
 
         // Listen for ice candidates
         pc.addEventListener('icecandidate', function (e) {

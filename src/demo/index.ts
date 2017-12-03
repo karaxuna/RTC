@@ -54,8 +54,8 @@ function connect(to) {
                 log(err.message);
             }
             else {
-                con.on('stream', function (e) {
-                    videoElement.src = URL.createObjectURL(e.stream);
+                con.on('streams', function (e) {
+                    videoElement.src = URL.createObjectURL(e.streams[0]);
                 }).on('rejected', function () {
                     log('peer rejected connection');
                 }).on('accepted', function () {
