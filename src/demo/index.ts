@@ -1,5 +1,6 @@
-import RTCPeer from '@lib/RTCPeer';
 import * as io from 'socket.io-client';
+import RTCPeer from '@lib/RTCPeer';
+import { log } from '@lib/logger';
 
 var socket = io.connect();
 var peer;
@@ -23,13 +24,13 @@ socket.on('connect', function () {
                     videoElement.src = URL.createObjectURL(strmArgs.stream);
                 }).on('channel', function () {
                     con.on('data', function (e) {
-                        alert('data received ' + e.data);
+                        log('data received', e.data);
                     });
                 });
             });
         }, function () {
             peer.reject(data, function () {
-                alert('you rejected connection');
+                log('you rejected connection');
             });
         });
     });
@@ -39,24 +40,24 @@ function connect(to) {
     navigator.getUserMedia({ audio: true, video: true }, function (stream) {
         peer.offer(to, [stream], function (err, con) {
             if (err) {
-                alert(err.message);
+                log(err.message);
             }
             else {
                 con.on('stream', function (e) {
                     videoElement.src = URL.createObjectURL(e.stream);
                 }).on('rejected', function () {
-                    alert('peer rejected connection');
+                    log('peer rejected connection');
                 }).on('accepted', function () {
-                    alert('peer accepted connection');
+                    log('peer accepted connection');
                 }).on('channel', function (channel) {
                     channel.send('hello friend');
-                    alert('data sent');
+                    log('data sent');
                 }).on('offerfailed', function (e) {
-                    alert(e.err.message);
+                    log(e.err);
                 });
             }
         });
     }, function (err) {
-        alert(err.message);
+        log(err);
     });
 }
