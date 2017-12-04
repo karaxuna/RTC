@@ -78,10 +78,10 @@ Events:
   
 Methods:
 
-  - `offer(String: to, [MediaStream]: streams, function: callback)` - create offer;
-  - `accept(Object: offer, [MediaStream]: streams, function: callback)` - accept offer;
-  - `reject(Object: offer, function: callback)` - reject offer;
-  - `stopConnection(RTCConnection: con, String: to, function: callback)` - stop connection (send notification to peer);
+  - `offer(to: string, streams: [MediaStream], callback)` - create offer;
+  - `accept(offer, streams: [MediaStream], callback)` - accept offer;
+  - `reject(offer, callback)` - reject offer;
+  - `stopConnection(con: RTCConnection, to: string, callback)` - stop connection (send notification to peer);
     
 **RTCConnection**
 
@@ -102,7 +102,7 @@ Events:
 Methods:
 
   - `close()` - close connection;
-  - `send(String: data)` - send data through DataChannel;
+  - `send(data: string)` - send data through DataChannel;
 
 ==
 
