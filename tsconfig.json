@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "rootDir": ".",
+        "target": "es5",
+        "lib": ["es2015", "dom"],
+        "module": "commonjs",
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "typeRoots": [],
+        "types": [
+            "@types/webrtc"
+        ],
+        "baseUrl": "",
+        "paths": {
+            "@lib/*": ["src/lib/*"]
+        }
+    },
+    "files": [
+        "./src/lib/index.ts",
+        "./src/demo/index.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
