@@ -3,7 +3,7 @@ RTC.js
 [1]: http://karaxuna-rtc.ap01.aws.af.cm/
 
 
-Simplified peer connection using webRTC
+Simplified peer connection using webRTC ([Demo](https://karaxuna-rtc.herokuapp.com/))
 ==
 
 **Creating peer:**
