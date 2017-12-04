@@ -1,9 +1,9 @@
-RTC.js
+RTC.js ([Demo](https://karaxuna-rtc.herokuapp.com/))
 ==
 [1]: http://karaxuna-rtc.ap01.aws.af.cm/
 
 
-Simplified peer connection using webRTC ([Demo](https://karaxuna-rtc.herokuapp.com/))
+Simplified peer connection using webRTC
 ==
 
 **Creating peer:**
