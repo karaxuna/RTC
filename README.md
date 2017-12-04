@@ -103,7 +103,3 @@ Methods:
 
   - `close()` - close connection;
   - `send(data: string)` - send data through DataChannel;
-
-Todo list:
-  1. Improve documentation;
-  2. Add DataChannel FireFox support
