@@ -1,13 +1,28 @@
 import * as io from 'socket.io-client';
 import RTCPeer from '@lib/RTCPeer';
+import Bash from './components/Bash';
+import './index.scss';
 
 var socket = io.connect();
 var peer;
-var socketIdContainer = document.getElementById('socketIdContainer') as HTMLDivElement;
 var videoElement = document.getElementById('video') as HTMLVideoElement;
-var connectButton = document.getElementById('connect') as HTMLButtonElement;
-var toInput = document.getElementById('to') as HTMLInputElement;
-var logsContainer = document.getElementById('logs') as HTMLDivElement;
+var bash = new Bash(document.getElementById('bash'));
+
+bash.on('stdin', function (command) {
+    log(command);
+    let args = command.split(' ');
+
+    if (args[0] === 'connect') {
+        if (!args[1]) {
+            return log('Peer socket id is missing.');
+        }
+
+        connect(args[1]);
+    }
+    else {
+        log('Unknown command.');
+    }
+});
 
 function log(...args) {
     let texts = args.map(arg => {
@@ -24,9 +39,12 @@ function log(...args) {
         }
     });
 
-    var logElement = document.createElement('div');
-    logElement.innerHTML = texts.join('<br/>');
-    logsContainer.appendChild(logElement);
+    bash.write(texts + '\n');
+    bash.write('> ');
+}
+
+if (location.hostname !== 'localhost' && location.protocol !== 'https:') {
+    log('You must use secure protocol (https) to access webRTC features.');
 }
 
 let getUserMedia = navigator.mediaDevices.getUserMedia ? navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices) :
@@ -40,19 +58,19 @@ let getUserMedia = navigator.mediaDevices.getUserMedia ? navigator.mediaDevices.
         })
     };
 
-connectButton.addEventListener('click', function () {
-    connect(toInput.value);
-});
-
 socket.on('connect', function () {
     peer = new RTCPeer({}, socket);
-    socketIdContainer.textContent = socket.id;
+    log('My socket id: ' + socket.id);
+    log('Type `connect <id>` to connect to peer');
 
     peer.on('offer', function (data) {
         getUserMedia({ audio: true, video: true }).then(function (stream) {
             peer.accept(data, [stream], function (err, con) {
                 con.on('streams', function (e) {
-                    videoElement.src = URL.createObjectURL(e.streams[0]);
+                    var video = document.createElement('video');
+                    video.src = URL.createObjectURL(e.streams[0]);
+                    video.autoplay = true;
+                    log(video);
                 }).on('channel', function () {
                     con.on('data', function (e) {
                         log('data received', e.data);
@@ -68,6 +86,8 @@ socket.on('connect', function () {
 });
 
 async function connect(to) {
+    log('Connecting to peer with id: ' + to);
+
     try {
         let stream = await getUserMedia({
             audio: true,
