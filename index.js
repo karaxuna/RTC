@@ -70,6 +70,14 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
+    socket.on('enumerate', function (data, callback) {
+        var ids = Object.keys(io.sockets.sockets).filter(id => id !== socket.id);
+
+        callback({
+            ids: ids
+        });
+    });
+
     socket.on('disconnect', function () {
         delete users[socket.id];
     });

@@ -19,6 +19,15 @@ bash.on('stdin', function (command) {
 
         connect(args[1]);
     }
+    else if (args[0] === 'enumerate') {
+        socket.emit('enumerate', {}, function ({ ids }) {
+            ids.forEach(id => log(id));
+        });
+    }
+    else if (args[0] === 'help') {
+        log('Type `connect <id>` to connect to peer.');
+        log('Type `enumerate` to list all connected sockets.');
+    }
     else {
         log('Unknown command.');
     }
@@ -37,7 +46,7 @@ function log(...args) {
         if (arg.name) {
             return arg.name;
         }
-    });
+    }).join('\n');
 
     bash.write(texts + '\n');
     bash.write('> ');
@@ -60,8 +69,7 @@ let getUserMedia = navigator.mediaDevices.getUserMedia ? navigator.mediaDevices.
 
 socket.on('connect', function () {
     peer = new RTCPeer({}, socket);
-    log('My socket id: ' + socket.id);
-    log('Type `connect <id>` to connect to peer');
+    log(`Welcome, your id is: "${socket.id}".\nType \`connect <id>\` to connecto to peer.\nType \`enumerate\` to list connected socket ids.`);
 
     peer.on('offer', function (data) {
         getUserMedia({ audio: true, video: true }).then(function (stream) {

@@ -26,10 +26,6 @@ function Bash(container) {
             this.value = null;
         }
     });
-
-    self.container.addEventListener('click', function () {
-        cmdInput.focus();
-    });
 }
 
 // Inherit from EventTarget
