@@ -8,7 +8,7 @@ var peer;
 var videoElement = document.getElementById('video') as HTMLVideoElement;
 var bash = new Bash(document.getElementById('bash'));
 
-bash.on('stdin', function (command) {
+bash.on('stdin', (command) => {
     log(command);
     let args = command.split(' ');
 
@@ -20,7 +20,7 @@ bash.on('stdin', function (command) {
         connect(args[1]);
     }
     else if (args[0] === 'enumerate') {
-        socket.emit('enumerate', {}, function ({ ids }) {
+        socket.emit('enumerate', {}, ({ ids }) => {
             ids.forEach(id => log(id));
         });
     }
@@ -34,21 +34,19 @@ bash.on('stdin', function (command) {
 });
 
 function log(...args) {
-    let texts = args.map(arg => {
-        if (typeof arg === 'string') {
-            return arg;
+    let items = args.map(item => {
+        if (item instanceof Error) {
+            return item.stack || item.name;
         }
 
-        if (arg.stack) {
-            return arg.stack;
-        }
+        return item;
+    });
 
-        if (arg.name) {
-            return arg.name;
-        }
-    }).join('\n');
-
-    bash.write(texts + '\n');
+    items.forEach(item => {
+        bash.write(item);
+        bash.write('\n');
+    });
+    
     bash.write('> ');
 }
 
@@ -72,26 +70,26 @@ var constraints = {
     video: true
 };
 
-socket.on('connect', function () {
+socket.on('connect', () => {
     peer = new RTCPeer({}, socket);
     log(`Welcome, your id is: "${socket.id}".\nType \`connect <id>\` to connecto to peer.\nType \`enumerate\` to list connected socket ids.`);
 
-    peer.on('offer', function (data) {
-        getUserMedia(constraints).then(function (stream) {
-            peer.accept(data, [stream], function (err, con) {
-                con.on('streams', function (e) {
-                    var video = document.createElement('video');
+    peer.on('offer', (data) => {
+        getUserMedia(constraints).then((stream) => {
+            peer.accept(data, [stream], (err, con) => {
+                con.on('streams', (e) => {
+                    let video = document.createElement('video');
                     video.src = URL.createObjectURL(e.streams[0]);
                     video.autoplay = true;
-                    bash.write(video);
-                }).on('channel', function () {
-                    con.on('data', function (e) {
+                    log(video);
+                }).on('channel', () => {
+                    con.on('data', (e) => {
                         log('data received', e.data);
                     });
                 });
             });
-        }, function () {
-            peer.reject(data, function () {
+        }, () => {
+            peer.reject(data, () => {
                 log('you rejected connection');
             });
         });
@@ -104,24 +102,24 @@ async function connect(to) {
     try {
         let stream = await getUserMedia(constraints);
 
-        peer.offer(to, [stream], function (err, con) {
+        peer.offer(to, [stream], (err, con) => {
             if (err) {
                 log(err.message);
             }
             else {
-                con.on('streams', function (e) {
+                con.on('streams', (e) => {
                     var video = document.createElement('video');
                     video.src = URL.createObjectURL(e.streams[0]);
                     video.autoplay = true;
-                    bash.write(video);
-                }).on('rejected', function () {
+                    log(video);
+                }).on('rejected', () => {
                     log('peer rejected connection');
-                }).on('accepted', function () {
+                }).on('accepted', () => {
                     log('peer accepted connection');
-                }).on('channel', function (channel) {
+                }).on('channel', (channel) => {
                     channel.send('hello friend');
                     log('data sent');
-                }).on('offerfailed', function (e) {
+                }).on('offerfailed', (e) => {
                     log(e.err);
                 });
             }
