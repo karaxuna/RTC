@@ -67,18 +67,23 @@ let getUserMedia = navigator.mediaDevices.getUserMedia ? navigator.mediaDevices.
         })
     };
 
+var constraints = {
+    audio: false,
+    video: true
+};
+
 socket.on('connect', function () {
     peer = new RTCPeer({}, socket);
     log(`Welcome, your id is: "${socket.id}".\nType \`connect <id>\` to connecto to peer.\nType \`enumerate\` to list connected socket ids.`);
 
     peer.on('offer', function (data) {
-        getUserMedia({ audio: true, video: true }).then(function (stream) {
+        getUserMedia(constraints).then(function (stream) {
             peer.accept(data, [stream], function (err, con) {
                 con.on('streams', function (e) {
                     var video = document.createElement('video');
                     video.src = URL.createObjectURL(e.streams[0]);
                     video.autoplay = true;
-                    log(video);
+                    bash.write(video);
                 }).on('channel', function () {
                     con.on('data', function (e) {
                         log('data received', e.data);
@@ -97,10 +102,7 @@ async function connect(to) {
     log('Connecting to peer with id: ' + to);
 
     try {
-        let stream = await getUserMedia({
-            audio: true,
-            video: true
-        });
+        let stream = await getUserMedia(constraints);
 
         peer.offer(to, [stream], function (err, con) {
             if (err) {
@@ -108,7 +110,10 @@ async function connect(to) {
             }
             else {
                 con.on('streams', function (e) {
-                    videoElement.src = URL.createObjectURL(e.streams[0]);
+                    var video = document.createElement('video');
+                    video.src = URL.createObjectURL(e.streams[0]);
+                    video.autoplay = true;
+                    bash.write(video);
                 }).on('rejected', function () {
                     log('peer rejected connection');
                 }).on('accepted', function () {
