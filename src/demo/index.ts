@@ -65,13 +65,17 @@ let getUserMedia = navigator.mediaDevices.getUserMedia ? navigator.mediaDevices.
     };
 
 function addVideo(stream) {
-    let video = document.createElement('video');
-    video.src = URL.createObjectURL(stream);
-    video.autoplay = true;
-    log(video);
+    try {
+        let video = document.createElement('video');
+        video.src = URL.createObjectURL(stream);
+        log(video);
 
-    if (confirm('Play video?')) {
-        video.play();
+        if (confirm('Play video?')) {
+            video.play();
+        }
+    }
+    catch (err) {
+        log(err);
     }
 }
 
