@@ -107,3 +107,17 @@ export function chain(fn) {
         return this;
     };
 }
+
+export function getUserMedia(...args) {
+    if (navigator.mediaDevices) {
+        return navigator.mediaDevices.getUserMedia.apply(navigator.mediaDevices, args);
+    }
+
+    return new Promise((resolve, reject) => {
+        navigator.getUserMedia.call(navigator, args[0], function (stream) {
+            resolve(stream);
+        }, function (err) {
+            reject(err);
+        });
+    });
+}
