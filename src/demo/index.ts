@@ -70,10 +70,8 @@ function addVideo(stream) {
     video.autoplay = true;
     log(video);
 
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        if (confirm('Play video?')) {
-            video.play();
-        }
+    if (confirm('Play video?')) {
+        video.play();
     }
 }
 
