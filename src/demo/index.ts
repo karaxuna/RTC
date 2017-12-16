@@ -70,13 +70,10 @@ function addVideo(stream) {
     try {
         let video = document.createElement('video');
         //video.src = URL.createObjectURL(stream);
+        video.src = stream;
         video.srcObject = stream;
         video.autoplay = true;
         log(video);
-
-        if (confirm('Play video?')) {
-            video.play();
-        }
     }
     catch (err) {
         log(err);
