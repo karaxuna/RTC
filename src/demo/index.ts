@@ -35,7 +35,7 @@ bash.on('stdin', (command) => {
 function log(...args) {
     let items = args.map(item => {
         if (item instanceof Error) {
-            return item.stack || item.name;
+            return item.name + '\n' + item.stack;
         }
 
         return item;
@@ -64,10 +64,13 @@ let getUserMedia = navigator.mediaDevices.getUserMedia ? navigator.mediaDevices.
         })
     };
 
+window.URL = window.URL || (window as any).webkitURL;
+
 function addVideo(stream) {
     try {
         let video = document.createElement('video');
         video.src = URL.createObjectURL(stream);
+        video.autoplay = true;
         log(video);
 
         if (confirm('Play video?')) {
