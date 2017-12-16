@@ -5,7 +5,6 @@ import './index.scss';
 
 var socket = io.connect();
 var peer;
-var videoElement = document.getElementById('video') as HTMLVideoElement;
 var bash = new Bash(document.getElementById('bash'));
 
 bash.on('stdin', (command) => {
@@ -46,7 +45,7 @@ function log(...args) {
         bash.write(item);
         bash.write('\n');
     });
-    
+
     bash.write('> ');
 }
 
@@ -65,6 +64,19 @@ let getUserMedia = navigator.mediaDevices.getUserMedia ? navigator.mediaDevices.
         })
     };
 
+function addVideo(stream) {
+    let video = document.createElement('video');
+    video.src = URL.createObjectURL(stream);
+    video.autoplay = true;
+    log(video);
+
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        if (confirm('Play video?')) {
+            video.play();
+        }
+    }
+}
+
 var constraints = {
     audio: false,
     video: true
@@ -78,12 +90,9 @@ socket.on('connect', () => {
         getUserMedia(constraints).then((stream) => {
             peer.accept(data, [stream], (err, con) => {
                 con.on('streams', (e) => {
-                    let video = document.createElement('video');
-                    video.src = URL.createObjectURL(e.streams[0]);
-                    video.autoplay = true;
-                    log(video);
+                    addVideo(e.streams[0]);
                 }).on('channel', () => {
-                    con.on('data', (e) => {
+                    con.on('data', e => {
                         log('data received', e.data);
                     });
                 });
@@ -107,11 +116,8 @@ async function connect(to) {
                 log(err.message);
             }
             else {
-                con.on('streams', (e) => {
-                    var video = document.createElement('video');
-                    video.src = URL.createObjectURL(e.streams[0]);
-                    video.autoplay = true;
-                    log(video);
+                con.on('streams', e => {
+                    addVideo(e.streams[0]);
                 }).on('rejected', () => {
                     log('peer rejected connection');
                 }).on('accepted', () => {
