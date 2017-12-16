@@ -69,7 +69,8 @@ window.URL = window.URL || (window as any).webkitURL;
 function addVideo(stream) {
     try {
         let video = document.createElement('video');
-        video.src = URL.createObjectURL(stream);
+        //video.src = URL.createObjectURL(stream);
+        video.srcObject = stream;
         video.autoplay = true;
         log(video);
 
