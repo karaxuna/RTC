@@ -44,11 +44,37 @@ if (location.hostname !== 'localhost' && location.protocol !== 'https:') {
     bash.log('You must use secure protocol (https) to access webRTC features.');
 }
 
+function createVideo(stream) {
+    let container = document.createElement('div');
+
+    let toggleSound = document.createElement('button');
+    toggleSound.type = 'button';
+    toggleSound.innerText = 'Unmute';
+    container.appendChild(toggleSound);
+
+    toggleSound.addEventListener('click', e => {
+        if (video.muted) {
+            video.muted = false;
+            toggleSound.innerText = 'Mute';
+        }
+        else {
+            video.muted = true;
+            toggleSound.innerText = 'Unmute';
+        }
+    });
+
+    let video = document.createElement('video');
+    video.srcObject = stream;
+    video.autoplay = true;
+    video.muted = true;
+    container.appendChild(video);
+
+    return container;
+}
+
 function addVideo(stream) {
     try {
-        let video = document.createElement('video');
-        video.srcObject = stream;
-        video.autoplay = true;
+        let video = createVideo(stream);
         bash.writeLine(video);
     }
     catch (err) {

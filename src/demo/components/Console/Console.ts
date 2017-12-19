@@ -37,8 +37,12 @@ class Console extends EventTarget {
             element = document.createElement('span');
             element.innerHTML = escapeHTML(item).split('\n').join('<br/>').split(' ').join('&nbsp;');
         }
-        else {
+        else if (item instanceof Node || item instanceof HTMLElement) {
             element = item;
+        }
+        else {
+            element = document.createElement('span');
+            element.innerText = '' + item;
         }
 
         return element;
